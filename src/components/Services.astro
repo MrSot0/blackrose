@@ -1,27 +1,39 @@
 ---
+import { Image } from 'astro:assets';
 import { services } from '../data/site';
 ---
-<section id="services" class="py-24 md:py-36">
-  <div class="container-x">
-    <div class="grid gap-8 lg:grid-cols-12">
-      <div class="lg:col-span-5">
-        <p class="eyebrow reveal">Services</p>
-        <h2 class="display reveal mt-5 text-[clamp(2rem,5vw,3.75rem)] leading-[1.08]" style="--d:80ms">From window decals<br />to conference sets.</h2>
+<section id="services" class="relative overflow-hidden bg-bone-50 py-24 text-carbon-900 md:py-36">
+  <div class="pointer-events-none absolute -top-40 -right-40 size-[34rem] rounded-full bg-gold-300/40 blur-[110px]" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute bottom-0 -left-40 size-[28rem] rounded-full bg-rose-400/15 blur-[110px]" aria-hidden="true"></div>
+
+  <div class="container-x relative">
+    <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-8">
+        <p class="reveal text-xs font-medium tracking-[0.3em] text-rose-500 uppercase">Services</p>
+        <h2 class="reveal mt-5 font-display text-[clamp(2.1rem,5vw,3.9rem)] leading-[1.05] font-extralight tracking-tight text-carbon-950" style="--d:80ms">
+          From window decals<br />to <span class="italic text-gold-500">conference sets.</span>
+        </h2>
       </div>
-      <p class="reveal max-w-xl self-end text-lg leading-relaxed lg:col-span-6 lg:col-start-7" style="--d:160ms">
+      <p class="reveal max-w-md text-lg leading-relaxed text-steel-600 lg:col-span-4" style="--d:160ms">
         We handle concept, artwork, production and installation, so your brand looks the same everywhere it shows up.
       </p>
     </div>
 
-    <ol class="mt-16 grid border-t border-carbon-700 sm:grid-cols-2 lg:grid-cols-3 md:mt-24">
+    <ul class="mt-14 grid gap-5 sm:grid-cols-2 md:mt-20 lg:grid-cols-3 lg:gap-6">
       {services.map((s, i) => (
-        <li class="reveal group relative border-b border-carbon-700 py-10 sm:px-8 sm:odd:border-r lg:border-r lg:[&:nth-child(3n)]:border-r-0 lg:odd:border-r lg:first:pl-0 lg:[&:nth-child(4)]:pl-0" style={`--d:${(i % 3) * 80}ms`}>
-          <span class="absolute top-0 left-0 h-px w-0 bg-gold-400 transition-all duration-700 ease-out-soft group-hover:w-full"></span>
-          <span class="text-xs font-medium tracking-[0.2em] text-gold-400">0{i + 1}</span>
-          <h3 class="mt-6 font-display text-xl font-light text-bone-50 md:text-2xl">{s.title}</h3>
-          <p class="mt-4 leading-relaxed text-ash-400 transition-colors group-hover:text-ash-200">{s.copy}</p>
+        <li class="reveal group" style={`--d:${(i % 3) * 100}ms`}>
+          <article class="relative h-full overflow-hidden rounded-2xl bg-white shadow-[0_1px_0_rgb(0_0_0/0.04),0_20px_40px_-24px_rgb(11_11_12/0.35)] ring-1 ring-carbon-950/5 transition-all duration-500 ease-out-soft hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-28px_rgb(11_11_12/0.5)]">
+            <div class="relative aspect-[4/3] overflow-hidden">
+              <Image src={s.image} alt={s.alt} widths={[400, 700]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw" class="h-full w-full object-cover transition-transform duration-[1.2s] ease-out-soft group-hover:scale-110" />
+              <div class="absolute inset-0 bg-gradient-to-t from-carbon-950/70 via-transparent to-transparent"></div>
+              <span class="absolute top-4 left-4 grid size-10 place-items-center rounded-full bg-gold-gradient font-display text-sm text-carbon-950">0{i + 1}</span>
+              <h3 class="absolute bottom-4 left-5 font-display text-2xl font-light text-bone-50">{s.title}</h3>
+            </div>
+            <p class="p-5 leading-relaxed text-steel-600 md:p-6">{s.copy}</p>
+            <span class="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-gold-400 to-rose-500 transition-all duration-700 ease-out-soft group-hover:w-full"></span>
+          </article>
         </li>
       ))}
-    </ol>
+    </ul>
   </div>
 </section>

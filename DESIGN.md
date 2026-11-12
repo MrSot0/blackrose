@@ -17,7 +17,14 @@ Direction: **dark editorial luxury**. A carbon-black canvas, large light-weight 
 | `gold-500` | `#C29A4B` | CTA hover, gold text on dark (AA at ≥18px) |
 | `gold-700` | `#7A5F2C` | Subtle gold borders |
 
-Rules: gold is an accent, never a background for large areas. Max one gold CTA per viewport. Body text is `ash-200` on `carbon-950` (contrast ≈ 12:1).
+| `gold-300` | `#EAD08F` | Light end of the gold gradient |
+| `rose-400/500/700` | `#E45A71` / `#C8364F` / `#7D1D2F` | Secondary accent (the "rose" in Black Rose): glows, eyebrows on light sections, errors |
+| `steel-900/800/600` | `#1D1D22` / `#26262D` / `#3B3B44` | Process section and body text on light sections |
+| `bone-100/200` | `#EBE7DF` / `#DDD7CB` | Light-section tints |
+
+Rules (v2, after client feedback "too black, monotone"): sections alternate dark / light / graphite so the page is not one flat black. Gold appears as a gradient (`bg-gold-gradient`, `text-gold-gradient`) on the marquee band, process cards and key words. Rose is used only for soft background glows and small labels. Body text is `ash-200` on `carbon-950` (≈ 12:1) and `steel-600` on `bone-50` (≈ 9:1).
+
+Section rhythm: Hero (photo collage) → gold marquee → Services (bone, image cards) → Work (carbon + rose/gold glows) → Process (steel gradient, gold flip cards) → Contact (carbon with moving gold/rose glows, bone form card) → Footer (carbon).
 
 ## Typography
 
@@ -33,13 +40,16 @@ Rules: gold is an accent, never a background for large areas. Max one gold CTA p
 
 ## Radius, borders, shadow
 
-- Radius: `0` on cards and images (editorial), `9999px` on pill buttons and the WhatsApp button.
+- Radius: `16px` (`rounded-2xl`) on service/process cards, `12px` on gallery tiles, `24px` on the form card, `9999px` on pills, chips and the WhatsApp button.
 - Borders: 1px `carbon-700`; gold hairline (`gold-700`) for emphasis.
 - Shadow: none on surfaces; soft gold glow only on the floating WhatsApp button.
 
 ## Motion
 
-- Page loader: logo mark + gold line fill, fades out ≤ 1.2s.
+- No page loader (removed at client request).
+- Hero background: WebP photo collage with a slow Ken Burns zoom.
+- Gallery: tiles wipe in from alternating directions, zoom out and fade from greyscale to colour, staggered 120ms.
+- Process: a gold line fills with scroll; each node lights up and flips its card to reveal the step.
 - Reveal on scroll: fade + 24px rise, 700ms, `cubic-bezier(.2,.7,.2,1)`, staggered 80ms.
 - Hero headline: per-line mask reveal.
 - Navbar: hides on scroll down, returns on scroll up, gains blurred background after 40px.

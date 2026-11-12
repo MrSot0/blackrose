@@ -1,24 +1,31 @@
 import type { ImageMetadata } from 'astro';
 
-import shopfront from '../assets/work/424682.jpg';
-import expoGazebo from '../assets/work/424683.jpg';
-import expoCounter from '../assets/work/424684.jpg';
-import frosting from '../assets/work/424685.jpg';
-import cateringCounter from '../assets/work/424686.jpg';
-import plinthA from '../assets/work/424687.jpg';
-import plinthB from '../assets/work/424688.jpg';
-import ledStage from '../assets/work/424690.jpg';
-import menuBoard from '../assets/work/424691.jpg';
-import storefront from '../assets/work/424692.jpg';
-import propA from '../assets/work/424693.jpg';
-import propB from '../assets/work/424694.jpg';
-import backdropA from '../assets/work/424695.jpg';
-import gazebo from '../assets/work/424696.jpg';
-import backdropB from '../assets/work/424697.jpg';
-import carA from '../assets/work/424698.jpg';
-import carB from '../assets/work/424699.jpg';
-import stageA from '../assets/work/424700.jpg';
-import stageB from '../assets/work/424701.jpg';
+import shopfront from '../assets/work/424682.webp';
+import expoGazebo from '../assets/work/424683.webp';
+import expoCounter from '../assets/work/424684.webp';
+import frosting from '../assets/work/424685.webp';
+import cateringCounter from '../assets/work/424686.webp';
+import plinthA from '../assets/work/424687.webp';
+import plinthB from '../assets/work/424688.webp';
+import ledStage from '../assets/work/424690.webp';
+import menuBoard from '../assets/work/424691.webp';
+import storefront from '../assets/work/424692.webp';
+import propA from '../assets/work/424693.webp';
+import propB from '../assets/work/424694.webp';
+import backdropA from '../assets/work/424695.webp';
+import gazebo from '../assets/work/424696.webp';
+import backdropB from '../assets/work/424697.webp';
+import carA from '../assets/work/424698.webp';
+import carB from '../assets/work/424699.webp';
+import stageA from '../assets/work/424700.webp';
+import stageB from '../assets/work/424701.webp';
+
+import svcEvents from '../assets/services/events.webp';
+import svcCars from '../assets/services/car-wraps.webp';
+import svcVinyl from '../assets/services/vinyl-decals.webp';
+import svcWallpaper from '../assets/services/wallpaper.webp';
+import svcGifting from '../assets/services/corporate-gifting.webp';
+import svcGazebos from '../assets/services/gazebos.webp';
 
 export const site = {
   name: 'Blackrose',
@@ -49,26 +56,38 @@ export const nav = [
 export const services = [
   {
     title: 'Events',
+    image: svcEvents,
+    alt: 'Speaker on a stage in front of a large screen and a seated audience',
     copy: 'Media walls, branded counters, stage sets and backdrops: designed, built and installed on site for launches, expos and conferences.',
   },
   {
     title: 'Car Wraps',
+    image: svcCars,
+    alt: 'White sports car under spotlights in a dark garage',
     copy: 'Cut-vinyl lettering and wraps that turn your car or fleet into a moving billboard.',
   },
   {
     title: 'Vinyl & Decals',
+    image: svcVinyl,
+    alt: 'Bright retail store interior with branded shelving and displays',
     copy: 'Shopfront graphics, window frosting, signage lettering and decals for glass, walls and other smooth surfaces.',
   },
   {
     title: 'Wallpaper',
+    image: svcWallpaper,
+    alt: 'Yellow armchair against a clean feature wall in a modern room',
     copy: 'Custom printed wallpaper and feature walls that bring your brand, or your personal style, into a home or office.',
   },
   {
     title: 'Corporate Gifting',
+    image: svcGifting,
+    alt: 'Pink gift box tied with a gold ribbon on a blush background',
     copy: 'Branded gifts and merchandise for your clients and team.',
   },
   {
     title: 'Gazebos',
+    image: svcGazebos,
+    alt: 'Market stalls under canopies with produce on display',
     copy: 'Fully branded gazebos for markets, sports days and outdoor events.',
   },
 ];

@@ -7,24 +7,9 @@ const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = doc
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ---------- Loader ---------- */
-function initLoader() {
-  const loader = $('#loader');
-  const done = () => {
-    document.body.classList.remove('is-locked');
-    document.documentElement.classList.add('is-loaded');
-    if (!loader) return;
-    loader.style.opacity = '0';
-    loader.addEventListener('transitionend', () => loader.remove(), { once: true });
-    setTimeout(() => loader.remove(), 1000);
-  };
-  const minTime = reduceMotion ? 0 : 900;
-  const start = performance.now();
-  const finish = () => setTimeout(done, Math.max(0, minTime - (performance.now() - start)));
-  if (document.readyState === 'complete') finish();
-  else window.addEventListener('load', finish, { once: true });
-  // safety net on slow networks
-  setTimeout(done, 3500);
+/* ---------- Entrance (hero line reveals) ---------- */
+function initEntrance() {
+  requestAnimationFrame(() => document.documentElement.classList.add('is-loaded'));
 }
 
 /* ---------- Navbar: hide on scroll down ---------- */
@@ -107,6 +92,44 @@ function initReveals() {
   items.forEach((el) => io.observe(el));
 }
 
+/* ---------- Gallery: staggered curtain reveals ---------- */
+const revealTile = (tile: HTMLElement, delay: number) => {
+  tile.style.setProperty('--d', `${delay}ms`);
+  const img = $<HTMLImageElement>('img', tile);
+  const go = () => tile.classList.add('is-in');
+  if (!img || img.complete) go();
+  else {
+    img.addEventListener('load', go, { once: true });
+    img.addEventListener('error', go, { once: true });
+  }
+};
+
+function initTiles() {
+  const tiles = $$('.tile');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    tiles.forEach((t) => t.classList.add('is-in'));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      const batch = entries
+        .filter((e) => e.isIntersecting)
+        .map((e) => e.target as HTMLElement)
+        .sort((a, b) => {
+          const ra = a.getBoundingClientRect();
+          const rb = b.getBoundingClientRect();
+          return ra.top - rb.top || ra.left - rb.left;
+        });
+      batch.forEach((tile, i) => {
+        revealTile(tile, i * 120);
+        io.unobserve(tile);
+      });
+    },
+    { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+  );
+  tiles.forEach((t) => io.observe(t));
+}
+
 /* ---------- Portfolio filter ---------- */
 function initFilter() {
   const buttons = $$<HTMLButtonElement>('.filter-btn');
@@ -115,13 +138,73 @@ function initFilter() {
     btn.addEventListener('click', () => {
       const cat = btn.dataset.filter;
       buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      let n = 0;
       items.forEach((item) => {
         const show = cat === 'All' || item.dataset.category === cat;
         item.hidden = !show;
-        if (show) item.classList.add('is-in');
+        item.classList.remove('is-in');
+        if (show) {
+          const delay = n++ * 90;
+          requestAnimationFrame(() => requestAnimationFrame(() => revealTile(item, delay)));
+        }
       });
     }),
   );
+}
+
+/* ---------- Process: scroll-linked nodes + card flips ---------- */
+function initProcess() {
+  const section = $('[data-process]');
+  if (!section) return;
+  const steps = $$('.process-step', section);
+  const track = $('ol', section)!;
+  if (reduceMotion) {
+    section.style.setProperty('--p', '1');
+    steps.forEach((s) => s.classList.add('is-active'));
+    return;
+  }
+  const desktop = window.matchMedia('(min-width: 1024px)');
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+    const r = track.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const start = vh * 0.8;
+    const end = vh * 0.55;
+    const span = desktop.matches ? vh * 0.35 : r.height + start - end;
+    const p = Math.min(1, Math.max(0, (start - r.top) / span));
+    section.style.setProperty('--p', p.toFixed(3));
+    steps.forEach((step, i) => {
+      const threshold = desktop.matches ? (i + 0.35) / steps.length : (i + 0.1) / steps.length;
+      step.classList.toggle('is-active', p >= threshold);
+    });
+  };
+  const onScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
+/* ---------- Contact: rotating word ---------- */
+function initRotator() {
+  const el = $('#rotator');
+  if (!el || reduceMotion) return;
+  const words: string[] = JSON.parse(el.dataset.words ?? '[]');
+  if (words.length < 2) return;
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % words.length;
+    el.textContent = words[i];
+    el.classList.remove('swap');
+    void el.offsetWidth;
+    el.classList.add('swap');
+  }, 2200);
 }
 
 /* ---------- Lightbox ---------- */
@@ -180,54 +263,51 @@ function initContactForm() {
   const form = $<HTMLFormElement>('#contact-form');
   if (!form) return;
   const status = $('#cf-status', form)!;
+  const name = $<HTMLInputElement>('#cf-name', form)!;
+  const company = $<HTMLInputElement>('#cf-company', form)!;
+  const email = $<HTMLInputElement>('#cf-email', form)!;
+  const message = $<HTMLTextAreaElement>('#cf-message', form)!;
+  const serviceGroup = $('#cf-service', form)!;
+  const radios = $$<HTMLInputElement>('input[name="service"]', form);
+  const service = () => radios.find((r) => r.checked)?.value ?? '';
 
-  const fields = {
-    name: $<HTMLInputElement>('#cf-name', form)!,
-    company: $<HTMLInputElement>('#cf-company', form)!,
-    email: $<HTMLInputElement>('#cf-email', form)!,
-    service: $<HTMLSelectElement>('#cf-service', form)!,
-    message: $<HTMLTextAreaElement>('#cf-message', form)!,
-  };
-
-  const setError = (el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement, bad: boolean) => {
+  const setError = (el: HTMLElement, errId: string, bad: boolean) => {
     el.setAttribute('aria-invalid', String(bad));
-    el.classList.toggle('!border-[#f08a7e]', bad);
-    $(`#${el.id}-err`)?.classList.toggle('hidden', !bad);
+    $(`#${errId}`)?.classList.toggle('hidden', !bad);
     return bad;
   };
 
   const validate = () => {
     const errors = [
-      setError(fields.name, fields.name.value.trim().length < 2),
-      setError(fields.email, fields.email.value.trim() !== '' && !fields.email.checkValidity()),
-      setError(fields.service, fields.service.value === ''),
-      setError(fields.message, fields.message.value.trim().length < 5),
+      setError(serviceGroup, 'cf-service-err', service() === ''),
+      setError(name, 'cf-name-err', name.value.trim().length < 2),
+      setError(email, 'cf-email-err', email.value.trim() !== '' && !email.checkValidity()),
+      setError(message, 'cf-message-err', message.value.trim().length < 5),
     ];
     return !errors.some(Boolean);
   };
 
-  Object.values(fields).forEach((el) =>
-    el.addEventListener('input', () => el.getAttribute('aria-invalid') === 'true' && validate()),
+  [name, email, message, ...radios].forEach((el) =>
+    el.addEventListener('input', () => form.querySelector('[aria-invalid="true"]') && validate()),
   );
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    status.textContent = '';
     if (!validate()) {
-      form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
-      status.textContent = '';
+      const bad = form.querySelector<HTMLElement>('[aria-invalid="true"]');
+      (bad === serviceGroup ? radios[0] : bad)?.focus();
       return;
     }
-    const company = fields.company.value.trim();
-    const email = fields.email.value.trim();
     const text = [
       `Hi Blackrose, I'd like a quote.`,
       ``,
-      `*Name:* ${fields.name.value.trim()}`,
-      company ? `*Company:* ${company}` : null,
-      email ? `*Email:* ${email}` : null,
-      `*Service:* ${fields.service.value}`,
+      `*Name:* ${name.value.trim()}`,
+      company.value.trim() ? `*Company:* ${company.value.trim()}` : null,
+      email.value.trim() ? `*Email:* ${email.value.trim()}` : null,
+      `*Service:* ${service()}`,
       ``,
-      fields.message.value.trim(),
+      message.value.trim(),
     ]
       .filter((l): l is string => l !== null)
       .join('\n');
@@ -237,10 +317,13 @@ function initContactForm() {
   });
 }
 
-initLoader();
+initEntrance();
 initNavbar();
 initMenu();
 initReveals();
+initTiles();
 initFilter();
+initProcess();
+initRotator();
 initLightbox();
 initContactForm();
