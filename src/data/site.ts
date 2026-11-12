@@ -50,6 +50,7 @@ export const nav = [
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#work' },
   { label: 'Process', href: '#process' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -213,4 +214,23 @@ export const process = [
   { title: 'Design', copy: 'We design it and you approve it before anything is built.' },
   { title: 'Produce', copy: 'We print, cut and fabricate each piece.' },
   { title: 'Install', copy: 'We install on location.' },
+];
+
+export const faqs = [
+  {
+    q: 'What branding services does Blackrose offer?',
+    a: 'Blackrose offers event branding, car wraps, vinyl and decals, wallpaper, corporate gifting and branded gazebos, for homes and businesses.',
+  },
+  {
+    q: 'Does Blackrose brand homes as well as businesses?',
+    a: 'Yes. Wallpaper, vinyl and decals work in homes as well as in offices, shops and on vehicles.',
+  },
+  {
+    q: 'How do I get a branding quote from Blackrose?',
+    a: 'Send a WhatsApp message to +27 83 874 7567, or fill in the form on this page. The form opens WhatsApp with your details ready to send.',
+  },
+  {
+    q: 'What should I send with my quote request?',
+    a: 'Tell us what you need branded, where it is and when you need it, and attach photos of the space or vehicle. Photos help us quote faster.',
+  },
 ];

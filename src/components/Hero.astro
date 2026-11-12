@@ -6,7 +6,7 @@ import { services } from '../data/site';
 // Every portfolio photo, resized once to a small WebP and reused across the moving columns.
 const files = import.meta.glob<{ default: ImageMetadata }>('../assets/work/*.webp', { eager: true });
 const photos = await Promise.all(
-  Object.values(files).map((m) => getImage({ src: m.default, width: 420, format: 'webp', quality: 68 })),
+  Object.values(files).map((m) => getImage({ src: m.default, widths: [240, 360], format: 'webp', quality: 58 })),
 );
 const COLS = 6;
 // Distribute photos so neighbouring columns start on different images
@@ -26,9 +26,13 @@ const lines = ['Branding you can', 'walk into.'];
             {[...col, ...col].map((img, k) => (
               <img
                 src={img.src}
+                srcset={img.srcSet.attribute}
+                sizes="(min-width: 768px) 17vw, 38vw"
                 alt=""
-                width="420"
-                loading={k < 3 ? 'eager' : 'lazy'}
+                width="360"
+                height="450"
+                loading={c < 3 && k % 6 < 3 ? 'eager' : 'lazy'}
+                fetchpriority={c < 3 && k % 6 < 2 ? 'high' : 'auto'}
                 decoding="async"
                 class:list={['w-full rounded-xl object-cover', heights[(c + k) % heights.length]]}
               />
@@ -52,7 +56,7 @@ const lines = ['Branding you can', 'walk into.'];
       ))}
     </h1>
     <p class="hero-fade mt-5 max-w-sm text-base text-bone-100 md:mt-6 md:text-lg" style="--d:650ms">
-      Events, car wraps, decals and wallpaper.
+      Event branding, car wraps, decals and wallpaper.
     </p>
     <div class="hero-fade mt-8 flex flex-wrap justify-center gap-3 sm:gap-4" style="--d:800ms">
       <a href="#contact" class="btn-gold">Get a quote <Icon name="arrow" class="arrow size-4" /></a>

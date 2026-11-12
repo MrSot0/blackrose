@@ -1,29 +1,117 @@
 ---
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
-import { waLink } from '../data/site';
-import { getImage } from 'astro:assets';
-import ogSrc from '../assets/work/424700.webp';
-const og = await getImage({ src: ogSrc, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
-const ogUrl = new URL(og.src, Astro.site).href;
+import { faqs, services, site, waLink } from '../data/site';
+import unboundedWoff2 from '@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2?url';
+import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 interface Props { title: string; description: string }
 const { title, description } = Astro.props;
+
+const siteUrl = Astro.site!.href;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.jpg', Astro.site).href;
+const logoUrl = new URL('/logo.svg', Astro.site).href;
+const sameAs = site.socials.filter((s) => s.href !== '#').map((s) => s.href);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'LocalBusiness',
+      '@id': `${siteUrl}#business`,
+      name: 'Blackrose Branding',
+      alternateName: 'Black Rose Branding',
+      slogan: 'Expert branding solutions for your home and business',
+      description,
+      url: siteUrl,
+      logo: logoUrl,
+      image: ogImage,
+      telephone: '+27838747567',
+      email: site.email,
+      // TODO: add address and geo once the client confirms their location
+      areaServed: { '@type': 'Country', name: 'South Africa' },
+      sameAs,
+      knowsAbout: services.map((s) => s.title),
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Branding services',
+        itemListElement: services.map((s) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: s.title, description: s.copy },
+        })),
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+27838747567',
+        contactType: 'sales',
+        availableLanguage: ['English'],
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}#website`,
+      url: siteUrl,
+      name: 'Blackrose Branding',
+      inLanguage: 'en-ZA',
+      publisher: { '@id': `${siteUrl}#business` },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${siteUrl}#faq`,
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ],
+};
 ---
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en-ZA" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#0B0B0C" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Local -->
+    <meta name="geo.region" content="ZA" />
+    <meta name="geo.placename" content="South Africa" />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Blackrose Branding" />
+    <meta property="og:locale" content="en_ZA" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Blackrose Branding logo with photos of event sets, car wraps and shopfront signage" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Icons / app -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Performance: fetch the two above-the-fold fonts early -->
+    <link rel="preload" href={unboundedWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
   </head>
   <body>

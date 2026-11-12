@@ -11,7 +11,7 @@ const spanCls = { tall: 'sm:row-span-2', wide: 'sm:col-span-2', square: '' } as 
   <div class="container-x relative">
     <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p class="reveal text-xs font-medium tracking-[0.3em] text-rose-400 uppercase">Selected work</p>
+        <p class="reveal text-xs font-medium tracking-[0.3em] text-rose-400 uppercase">Branding portfolio</p>
         <h2 class="display reveal mt-5 text-[clamp(2rem,5vw,3.75rem)] leading-[1.08]" style="--d:80ms">Stages, shopfronts,<br /><span class="text-gold-gradient">vehicles &amp; displays.</span></h2>
       </div>
       <div class="reveal flex flex-wrap gap-2" role="group" aria-label="Filter projects" style="--d:160ms">
@@ -30,7 +30,7 @@ const spanCls = { tall: 'sm:row-span-2', wide: 'sm:col-span-2', square: '' } as 
             data-project={i}
             aria-label={`Open ${p.title} gallery (${p.images.length} ${p.images.length > 1 ? 'photos' : 'photo'})`}
           >
-            <Image src={p.images[0].src} alt={p.images[0].alt} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="tile-img h-full w-full object-cover" />
+            <Image src={p.images[0].src} alt={p.images[0].alt} widths={[400, 640, 960]} quality={62} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="tile-img h-full w-full object-cover" />
             <span class="absolute inset-0 bg-gradient-to-t from-carbon-950/90 via-carbon-950/10 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100"></span>
             <span class="tile-meta absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-5 text-center md:p-6">
               <span class="flex flex-col items-center">
