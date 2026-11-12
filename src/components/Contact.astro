@@ -1,0 +1,75 @@
+---
+import Icon from './Icon.astro';
+import { services, site, waLink } from '../data/site';
+---
+<section id="contact" class="relative overflow-hidden border-t border-carbon-700 py-24 md:py-36">
+  <div class="pointer-events-none absolute -bottom-60 -left-40 size-[36rem] rounded-full bg-gold-400/8 blur-[120px]" aria-hidden="true"></div>
+  <div class="container-x relative grid gap-16 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <p class="eyebrow reveal">Contact</p>
+      <h2 class="display reveal mt-5 text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.04]" style="--d:80ms">Get a quote<br />on <span class="text-gold-400">WhatsApp.</span></h2>
+      <p class="reveal mt-8 max-w-md text-lg leading-relaxed" style="--d:160ms">
+        Tell us what you need and the form will open WhatsApp with your message ready to send. Photos of the space or vehicle help us quote faster.
+      </p>
+
+      <dl class="reveal mt-12 space-y-6 border-t border-carbon-700 pt-8" style="--d:240ms">
+        <div>
+          <dt class="field-label">WhatsApp</dt>
+          <dd><a href={waLink()} target="_blank" rel="noopener" class="font-display text-xl font-light text-bone-50 transition-colors hover:text-gold-400">{site.phoneDisplay}</a></dd>
+        </div>
+        <div>
+          <dt class="field-label">Email</dt>
+          <dd><a href={`mailto:${site.email}`} class="text-lg text-bone-50 transition-colors hover:text-gold-400 break-all">{site.email}</a></dd>
+        </div>
+        <div>
+          <dt class="field-label">Follow</dt>
+          <dd class="mt-2 flex gap-3">
+            {site.socials.map((s) => (
+              <a href={s.href} {...(s.href !== '#' && { target: '_blank', rel: 'noopener' })} aria-label={s.name} class="grid size-11 place-items-center rounded-full border border-carbon-700 text-ash-200 transition-colors hover:border-gold-400 hover:text-gold-400">
+                <Icon name={s.icon} />
+              </a>
+            ))}
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <form id="contact-form" class="reveal grid gap-8 self-start border border-carbon-700 bg-carbon-900/60 p-6 sm:grid-cols-2 md:p-10 lg:col-span-6 lg:col-start-7" style="--d:200ms" novalidate>
+      <div>
+        <label for="cf-name" class="field-label">Name *</label>
+        <input id="cf-name" name="name" type="text" autocomplete="name" required class="field" placeholder="Your full name" />
+        <p class="error mt-2 hidden text-sm text-[#f08a7e]" id="cf-name-err">Please tell us your name.</p>
+      </div>
+      <div>
+        <label for="cf-company" class="field-label">Company</label>
+        <input id="cf-company" name="company" type="text" autocomplete="organization" class="field" placeholder="Optional" />
+      </div>
+      <div>
+        <label for="cf-email" class="field-label">Email</label>
+        <input id="cf-email" name="email" type="email" autocomplete="email" class="field" placeholder="you@company.com" aria-describedby="cf-email-err" />
+        <p class="error mt-2 hidden text-sm text-[#f08a7e]" id="cf-email-err">That email doesn’t look right.</p>
+      </div>
+      <div>
+        <label for="cf-service" class="field-label">Service *</label>
+        <select id="cf-service" name="service" required class="field cursor-pointer bg-carbon-900 [&>option]:bg-carbon-900" aria-describedby="cf-service-err">
+          <option value="">Choose a service</option>
+          {services.map((s) => <option>{s.title}</option>)}
+          <option>Something else</option>
+        </select>
+        <p class="error mt-2 hidden text-sm text-[#f08a7e]" id="cf-service-err">Pick the closest match.</p>
+      </div>
+      <div class="sm:col-span-2">
+        <label for="cf-message" class="field-label">Project details *</label>
+        <textarea id="cf-message" name="message" rows="4" required class="field resize-none" placeholder="What are we branding, where, and by when?" aria-describedby="cf-message-err"></textarea>
+        <p class="error mt-2 hidden text-sm text-[#f08a7e]" id="cf-message-err">A few words about the project, please.</p>
+      </div>
+      <div class="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-xs text-ash-400">Opens WhatsApp. Nothing is sent until you press send there.</p>
+        <button type="submit" class="btn-gold justify-center">
+          <Icon name="whatsapp" class="size-4" /> Send via WhatsApp <Icon name="arrow" class="arrow size-4" />
+        </button>
+      </div>
+      <p id="cf-status" class="text-sm text-gold-400 sm:col-span-2 empty:hidden" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>

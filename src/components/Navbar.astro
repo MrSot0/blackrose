@@ -1,0 +1,63 @@
+---
+import Logo from './Logo.astro';
+import { nav, waLink } from '../data/site';
+---
+<header id="navbar" class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[transform,background-color,border-color] duration-500 ease-out-soft">
+  <nav class="container-x flex h-18 items-center justify-between md:h-20" aria-label="Main">
+    <a href="#top" aria-label="Blackrose, back to top" class="relative z-10"><Logo /></a>
+
+    <ul class="hidden items-center gap-10 md:flex">
+      {nav.map((l) => (
+        <li><a href={l.href} class="group relative text-sm tracking-wide text-ash-200 transition-colors hover:text-bone-50">
+          {l.label}
+          <span class="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-gold-400 transition-transform duration-300 group-hover:scale-x-100"></span>
+        </a></li>
+      ))}
+    </ul>
+
+    <a href={waLink("Hi Blackrose, I'd like a quote.")} target="_blank" rel="noopener" class="btn-gold hidden !px-5 !py-2.5 md:inline-flex">Get a quote</a>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      class="relative z-10 -mr-2 grid size-11 place-items-center md:hidden"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="Open menu"
+    >
+      <span class="relative block h-3 w-7">
+        <span class="bar absolute top-0 left-0 h-px w-full bg-bone-50 transition-transform duration-300"></span>
+        <span class="bar absolute bottom-0 left-0 h-px w-full bg-bone-50 transition-transform duration-300"></span>
+      </span>
+    </button>
+  </nav>
+
+  <div
+    id="mobile-menu"
+    class="invisible fixed inset-0 flex flex-col bg-carbon-950 px-5 pt-28 pb-10 opacity-0 md:hidden"
+    inert
+  >
+    <ul class="flex flex-col gap-2">
+      {nav.map((l, i) => (
+        <li class="menu-item translate-y-4 opacity-0 transition-[opacity,transform] duration-500" style={`transition-delay:${100 + i * 70}ms`}>
+          <a href={l.href} class="flex items-baseline gap-4 border-b border-carbon-700 py-4">
+            <span class="text-xs text-gold-400">0{i + 1}</span>
+            <span class="display text-4xl">{l.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a href={waLink("Hi Blackrose, I'd like a quote.")} target="_blank" rel="noopener" class="btn-gold mt-auto justify-center">Get a quote on WhatsApp</a>
+  </div>
+</header>
+
+<style>
+  #navbar.is-scrolled { background-color: rgb(11 11 12 / 0.75); backdrop-filter: blur(14px); border-color: var(--color-carbon-700); }
+  #navbar.is-hidden { transform: translateY(-100%); }
+  #navbar.menu-open { transform: none; background-color: transparent; border-color: transparent; backdrop-filter: none; }
+  #mobile-menu { transition: opacity .5s, visibility 0s linear .5s; }
+  #navbar.menu-open #mobile-menu { visibility: visible; opacity: 1; transition: opacity .5s, visibility 0s; }
+  #navbar.menu-open .menu-item { opacity: 1; transform: none; }
+  #navbar.menu-open .bar:first-child { transform: translateY(5.5px) rotate(45deg); }
+  #navbar.menu-open .bar:last-child { transform: translateY(-5.5px) rotate(-45deg); }
+</style>

@@ -1,0 +1,27 @@
+---
+import { services } from '../data/site';
+---
+<section id="services" class="py-24 md:py-36">
+  <div class="container-x">
+    <div class="grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <p class="eyebrow reveal">Services</p>
+        <h2 class="display reveal mt-5 text-[clamp(2rem,5vw,3.75rem)] leading-[1.08]" style="--d:80ms">From window decals<br />to conference sets.</h2>
+      </div>
+      <p class="reveal max-w-xl self-end text-lg leading-relaxed lg:col-span-6 lg:col-start-7" style="--d:160ms">
+        We handle concept, artwork, production and installation, so your brand looks the same everywhere it shows up.
+      </p>
+    </div>
+
+    <ol class="mt-16 grid border-t border-carbon-700 sm:grid-cols-2 lg:grid-cols-3 md:mt-24">
+      {services.map((s, i) => (
+        <li class="reveal group relative border-b border-carbon-700 py-10 sm:px-8 sm:odd:border-r lg:border-r lg:[&:nth-child(3n)]:border-r-0 lg:odd:border-r lg:first:pl-0 lg:[&:nth-child(4)]:pl-0" style={`--d:${(i % 3) * 80}ms`}>
+          <span class="absolute top-0 left-0 h-px w-0 bg-gold-400 transition-all duration-700 ease-out-soft group-hover:w-full"></span>
+          <span class="text-xs font-medium tracking-[0.2em] text-gold-400">0{i + 1}</span>
+          <h3 class="mt-6 font-display text-xl font-light text-bone-50 md:text-2xl">{s.title}</h3>
+          <p class="mt-4 leading-relaxed text-ash-400 transition-colors group-hover:text-ash-200">{s.copy}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

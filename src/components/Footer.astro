@@ -1,0 +1,46 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, services, site, waLink } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="border-t border-carbon-700 pt-20 pb-10">
+  <div class="container-x">
+    <div class="grid gap-12 md:grid-cols-12">
+      <div class="md:col-span-4">
+        <Logo size="lg" />
+        <p class="mt-8 max-w-xs leading-relaxed text-ash-400">{site.tagline}.</p>
+      </div>
+      <div class="md:col-span-2">
+        <p class="field-label">Explore</p>
+        <ul class="mt-4 space-y-3">
+          {nav.map((l) => <li><a href={l.href} class="hover:text-gold-400">{l.label}</a></li>)}
+        </ul>
+      </div>
+      <div class="md:col-span-3">
+        <p class="field-label">Services</p>
+        <ul class="mt-4 space-y-3">
+          {services.map((s) => <li><a href="#services" class="hover:text-gold-400">{s.title}</a></li>)}
+        </ul>
+      </div>
+      <div class="md:col-span-3">
+        <p class="field-label">Contact</p>
+        <ul class="mt-4 space-y-3">
+          <li><a href={waLink()} target="_blank" rel="noopener" class="hover:text-gold-400">{site.phoneDisplay}</a></li>
+          <li><a href={`mailto:${site.email}`} class="break-words hover:text-gold-400">{site.email}</a></li>
+        </ul>
+        <div class="mt-6 flex gap-2">
+          {site.socials.map((s) => (
+            <a href={s.href} {...(s.href !== '#' && { target: '_blank', rel: 'noopener' })} aria-label={s.name} class="grid size-10 place-items-center rounded-full border border-carbon-700 text-ash-200 transition-colors hover:border-gold-400 hover:text-gold-400">
+              <Icon name={s.icon} class="size-4" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div class="mt-16 flex flex-col gap-3 border-t border-carbon-700 pt-8 text-xs text-ash-400 sm:flex-row sm:justify-between">
+      <p>© {year} Blackrose Branding. All rights reserved.</p>
+      <a href="#top" class="hover:text-gold-400">Back to top ↑</a>
+    </div>
+  </div>
+</footer>

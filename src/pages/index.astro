@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import Work from '../components/Work.astro';
+import Process from '../components/Process.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout
+  title="Blackrose Branding | Events, Car Wraps, Vinyl & Wallpaper"
+  description="Blackrose designs, prints and installs branding for homes and businesses: event sets, car wraps, vinyl and decals, wallpaper, corporate gifting and gazebos."
+>
+  <Navbar />
+  <main id="main">
+    <Hero />
+    <Services />
+    <Work />
+    <Process />
+    <Contact />
+  </main>
+  <Footer />
+</Layout>

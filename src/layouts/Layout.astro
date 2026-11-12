@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import { waLink } from '../data/site';
+import { getImage } from 'astro:assets';
+import ogSrc from '../assets/work/424700.jpg';
+const og = await getImage({ src: ogSrc, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogUrl = new URL(og.src, Astro.site).href;
+
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0B0B0C" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
+  </head>
+  <body class="is-locked">
+    <a href="#main" class="sr-only z-[100] rounded-full bg-gold-400 px-5 py-3 text-sm font-medium text-carbon-950 focus:not-sr-only focus:fixed focus:top-4 focus:left-4">Skip to content</a>
+
+    <!-- Page loader -->
+    <div id="loader" class="fixed inset-0 z-[90] flex flex-col items-center justify-center gap-6 bg-carbon-950 transition-opacity duration-700" aria-hidden="true">
+      <Logo />
+      <div class="h-px w-40 overflow-hidden bg-carbon-700">
+        <div class="animate-loader-fill h-full w-full bg-gold-400"></div>
+      </div>
+    </div>
+
+    <slot />
+
+    <!-- Floating WhatsApp -->
+    <a
+      href={waLink("Hi Blackrose, I'd like a quote for a branding project.")}
+      target="_blank"
+      rel="noopener"
+      aria-label="Chat with Blackrose on WhatsApp"
+      class="group fixed right-5 bottom-5 z-40 flex items-center gap-3 md:right-8 md:bottom-8"
+    >
+      <span class="hidden rounded-full border border-carbon-700 bg-carbon-900/90 px-4 py-2 text-sm text-bone-50 opacity-0 backdrop-blur transition-all duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 md:block translate-x-2 group-hover:translate-x-0">Chat on WhatsApp</span>
+      <span class="animate-wa-pulse grid size-14 place-items-center rounded-full border border-gold-400/70 bg-carbon-900 text-[#25D366] transition-transform duration-300 group-hover:scale-105">
+        <Icon name="whatsapp" class="size-7" />
+      </span>
+    </a>
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>

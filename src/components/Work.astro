@@ -1,0 +1,76 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { projects } from '../data/site';
+const categories = ['All', ...new Set(projects.map((p) => p.category))];
+const spanCls = { tall: 'sm:row-span-2', wide: 'sm:col-span-2', square: '' } as const;
+---
+<section id="work" class="border-t border-carbon-700 bg-carbon-900/40 py-24 md:py-36">
+  <div class="container-x">
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="eyebrow reveal">Selected work</p>
+        <h2 class="display reveal mt-5 text-[clamp(2rem,5vw,3.75rem)] leading-[1.08]" style="--d:80ms">Stages, shopfronts,<br />vehicles &amp; displays.</h2>
+      </div>
+      <div class="reveal flex flex-wrap gap-2" role="group" aria-label="Filter projects" style="--d:160ms">
+        {categories.map((c, i) => (
+          <button type="button" data-filter={c} aria-pressed={i === 0 ? 'true' : 'false'} class="filter-btn rounded-full border border-carbon-700 px-5 py-2 text-sm text-ash-200 transition-colors hover:border-bone-50 hover:text-bone-50 aria-pressed:border-gold-400 aria-pressed:bg-gold-400 aria-pressed:text-carbon-950">{c}</button>
+        ))}
+      </div>
+    </div>
+
+    <ul id="work-grid" class="mt-14 grid grid-flow-dense auto-rows-[18rem] gap-3 sm:grid-cols-2 md:mt-20 md:auto-rows-[20rem] md:gap-4 lg:grid-cols-3">
+      {projects.map((p, i) => (
+        <li class:list={['work-item reveal', spanCls[p.span], p.extra]} data-category={p.category} style={`--d:${(i % 3) * 80}ms`}>
+          <button
+            type="button"
+            class="group relative block h-full w-full overflow-hidden bg-carbon-800 text-left"
+            data-project={i}
+            aria-label={`Open ${p.title} gallery (${p.images.length} ${p.images.length > 1 ? 'photos' : 'photo'})`}
+          >
+            <Image src={p.images[0].src} alt={p.images[0].alt} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="h-full w-full object-cover transition-transform duration-[1.2s] ease-out-soft group-hover:scale-[1.04]" />
+            <span class="absolute inset-0 bg-gradient-to-t from-carbon-950/90 via-carbon-950/10 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100"></span>
+            <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 md:p-6">
+              <span>
+                <span class="block text-[0.7rem] font-medium tracking-[0.25em] text-gold-400 uppercase">{p.category}</span>
+                <span class="mt-2 block font-display text-lg font-light text-bone-50 md:text-xl">{p.title}</span>
+              </span>
+              <span class="grid size-10 shrink-0 place-items-center rounded-full border border-bone-50/30 text-bone-50 transition-all duration-300 group-hover:border-gold-400 group-hover:bg-gold-400 group-hover:text-carbon-950">
+                <Icon name="arrow" class="size-4 -rotate-45" />
+              </span>
+            </span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- Lightbox -->
+  <dialog id="lightbox" class="m-0 h-dvh max-h-none w-screen max-w-none bg-carbon-950/95 p-0 text-bone-50 backdrop:bg-carbon-950/80 open:flex" aria-labelledby="lb-title">
+    <div class="flex h-full w-full flex-col">
+      <div class="container-x flex items-center justify-between py-5">
+        <div>
+          <p id="lb-cat" class="text-[0.7rem] font-medium tracking-[0.25em] text-gold-400 uppercase"></p>
+          <h3 id="lb-title" class="mt-1 font-display text-lg font-light md:text-2xl"></h3>
+        </div>
+        <button type="button" id="lb-close" class="grid size-11 place-items-center rounded-full border border-carbon-700 hover:border-bone-50" aria-label="Close gallery"><Icon name="close" /></button>
+      </div>
+      <div class="relative flex min-h-0 flex-1 items-center justify-center px-5 md:px-20">
+        {projects.map((p, i) => (
+          <template data-lb={i} data-title={p.title} data-cat={p.category} data-desc={p.description}>
+            {p.images.map((img) => (
+              <Image src={img.src} alt={img.alt} widths={[800, 1400, 1600]} sizes="90vw" class="max-h-full max-w-full object-contain" />
+            ))}
+          </template>
+        ))}
+        <div id="lb-stage" class="flex h-full max-h-full w-full items-center justify-center [&>img]:max-h-full"></div>
+        <button type="button" id="lb-prev" class="absolute left-2 grid size-11 place-items-center rounded-full border border-carbon-700 bg-carbon-950/70 hover:border-bone-50 md:left-6" aria-label="Previous photo"><Icon name="chevron-left" /></button>
+        <button type="button" id="lb-next" class="absolute right-2 grid size-11 place-items-center rounded-full border border-carbon-700 bg-carbon-950/70 hover:border-bone-50 md:right-6" aria-label="Next photo"><Icon name="chevron-right" /></button>
+      </div>
+      <div class="container-x flex flex-col gap-1 py-5 text-sm text-ash-400 sm:flex-row sm:justify-between">
+        <p id="lb-desc"></p>
+        <p id="lb-count" class="text-ash-200" aria-live="polite"></p>
+      </div>
+    </div>
+  </dialog>
+</section>
