@@ -63,12 +63,6 @@ const lines = ['Branding you can', 'walk into.'];
       <a href="#work" class="btn-ghost backdrop-blur-sm">See our work</a>
     </div>
 
-    <a href="#services" class="hero-fade absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-xs tracking-[0.3em] text-bone-100 uppercase md:flex" style="--d:1200ms">
-      Scroll
-      <span class="relative block h-12 w-px overflow-hidden bg-bone-50/20">
-        <span class="absolute inset-x-0 top-0 h-1/2 animate-[scrollcue_1.8s_ease-in-out_infinite] bg-gold-400"></span>
-      </span>
-    </a>
   </div>
 
   <!-- gold marquee -->
@@ -91,8 +85,4 @@ const lines = ['Branding you can', 'walk into.'];
   .collage-track { animation: collage-up var(--dur, 50s) linear infinite; will-change: transform; }
   .collage-track.is-down { animation-name: collage-down; }
   @media (prefers-reduced-motion: reduce) { .collage-track { animation: none; } }
-  @keyframes scrollcue {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(200%); }
-  }
 </style>
