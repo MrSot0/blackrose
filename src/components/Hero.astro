@@ -1,31 +1,42 @@
 ---
 import { getImage } from 'astro:assets';
 import Icon from './Icon.astro';
-import collageDesktop from '../assets/hero/collage-desktop.webp';
-import collageMobile from '../assets/hero/collage-mobile.webp';
 import { services } from '../data/site';
 
-const desk = await getImage({ src: collageDesktop, widths: [1280, 1920, 2400], format: 'webp', quality: 72 });
-const mob = await getImage({ src: collageMobile, widths: [480, 900], format: 'webp', quality: 72 });
+// Every portfolio photo, resized once to a small WebP and reused across the moving columns.
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/work/*.webp', { eager: true });
+const photos = await Promise.all(
+  Object.values(files).map((m) => getImage({ src: m.default, width: 420, format: 'webp', quality: 68 })),
+);
+const COLS = 6;
+// Distribute photos so neighbouring columns start on different images
+const columns = Array.from({ length: COLS }, (_, c) =>
+  Array.from({ length: 6 }, (_, k) => photos[(c * 3 + k * 5) % photos.length]),
+);
+const heights = ['aspect-[3/4]', 'aspect-[4/5]', 'aspect-square', 'aspect-[4/3]'];
 const lines = ['Branding', 'you can', 'walk into.'];
 ---
 <section id="top" class="relative isolate flex min-h-[100svh] flex-col overflow-hidden">
   <!-- Collage background -->
   <div class="absolute inset-0 -z-10" aria-hidden="true">
-    <picture>
-      <source media="(min-width: 768px)" srcset={desk.srcSet.attribute} sizes="100vw" type="image/webp" />
-      <img
-        src={mob.src}
-        srcset={mob.srcSet.attribute}
-        sizes="100vw"
-        alt=""
-        width={900}
-        height={1700}
-        fetchpriority="high"
-        decoding="async"
-        class="hero-bg animate-kenburns h-full w-full object-cover"
-      />
-    </picture>
+    <div class="collage absolute -inset-x-[10%] -inset-y-[20%] grid -rotate-6 grid-cols-3 gap-3 md:grid-cols-6 md:gap-4">
+      {columns.map((col, c) => (
+        <div class:list={['collage-col overflow-hidden', c >= 3 && 'hidden md:block']}>
+          <div class:list={['collage-track flex flex-col gap-3 pb-3 md:gap-4 md:pb-4', c % 2 ? 'is-down' : 'is-up']} style={`--dur:${46 + (c % 3) * 12}s`}>
+            {[...col, ...col].map((img, k) => (
+              <img
+                src={img.src}
+                alt=""
+                width="420"
+                loading={k < 3 ? 'eager' : 'lazy'}
+                decoding="async"
+                class:list={['w-full rounded-xl object-cover', heights[(c + k) % heights.length]]}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
     <!-- colour + legibility layers -->
     <div class="absolute inset-0 bg-carbon-950/40"></div>
     <div class="absolute inset-0 bg-gradient-to-t from-carbon-950 via-carbon-950/60 to-carbon-950/10 md:bg-gradient-to-r md:from-carbon-950/95 md:via-carbon-950/70 md:to-carbon-950/5"></div>
@@ -71,6 +82,11 @@ const lines = ['Branding', 'you can', 'walk into.'];
 </section>
 
 <style is:global>
+  @keyframes collage-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+  @keyframes collage-down { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+  .collage-track { animation: collage-up var(--dur, 50s) linear infinite; will-change: transform; }
+  .collage-track.is-down { animation-name: collage-down; }
+  @media (prefers-reduced-motion: reduce) { .collage-track { animation: none; } }
   @keyframes scrollcue {
     from { transform: translateY(-100%); }
     to { transform: translateY(200%); }

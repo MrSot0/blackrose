@@ -46,7 +46,7 @@ Section rhythm: Hero (photo collage) → gold marquee → Services (bone, image 
 ## Motion
 
 - No page loader (removed at client request).
-- Hero background: WebP photo collage with a slow Ken Burns zoom.
+- Hero background: tilted photo collage in columns (3 on phones, 6 on desktop) that scroll endlessly, alternating up and down at different speeds.
 - Gallery: tiles wipe in from alternating directions, zoom out and fade from greyscale to colour, staggered 120ms.
 - Process: a gold line fills with scroll; each node lights up and flips its card to reveal the step.
 - Reveal on scroll: fade + 24px rise, 700ms, `cubic-bezier(.2,.7,.2,1)`, staggered 80ms.
@@ -55,6 +55,8 @@ Section rhythm: Hero (photo collage) → gold marquee → Services (bone, image 
 - All motion disabled under `prefers-reduced-motion`.
 
 ## Components
+
+- **Cards (services, gallery, process, contact):** content centred horizontally; gallery tiles show the open arrow on hover/focus.
 
 - **Button primary:** gold-400 fill, carbon-950 text, pill, hover gold-500 + arrow nudge.
 - **Button ghost:** 1px bone border, bone text, hover fills bone with carbon text.

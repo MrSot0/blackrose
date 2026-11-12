@@ -32,12 +32,12 @@ const spanCls = { tall: 'sm:row-span-2', wide: 'sm:col-span-2', square: '' } as 
           >
             <Image src={p.images[0].src} alt={p.images[0].alt} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="tile-img h-full w-full object-cover" />
             <span class="absolute inset-0 bg-gradient-to-t from-carbon-950/90 via-carbon-950/10 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100"></span>
-            <span class="tile-meta absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 md:p-6">
-              <span>
+            <span class="tile-meta absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-5 text-center md:p-6">
+              <span class="flex flex-col items-center">
                 <span class="inline-block rounded-full bg-gold-400/90 px-2.5 py-1 text-[0.65rem] font-semibold tracking-[0.2em] text-carbon-950 uppercase">{p.category}</span>
                 <span class="mt-2 block font-display text-lg font-light text-bone-50 md:text-xl">{p.title}</span>
               </span>
-              <span class="grid size-10 shrink-0 place-items-center rounded-full border border-bone-50/30 text-bone-50 transition-all duration-300 group-hover:border-gold-400 group-hover:bg-gold-400 group-hover:text-carbon-950">
+              <span class="grid size-10 shrink-0 scale-75 place-items-center rounded-full border border-bone-50/30 opacity-0 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 text-bone-50 transition-all duration-300 group-hover:border-gold-400 group-hover:bg-gold-400 group-hover:text-carbon-950">
                 <Icon name="arrow" class="size-4 -rotate-45" />
               </span>
             </span>

@@ -40,8 +40,7 @@ import { nav, waLink } from '../data/site';
     <ul class="flex flex-col gap-2">
       {nav.map((l, i) => (
         <li class="menu-item translate-y-4 opacity-0 transition-[opacity,transform] duration-500" style={`transition-delay:${100 + i * 70}ms`}>
-          <a href={l.href} class="flex items-baseline gap-4 border-b border-carbon-700 py-4">
-            <span class="text-xs text-gold-400">0{i + 1}</span>
+          <a href={l.href} class="block border-b border-carbon-700 py-4">
             <span class="display text-4xl">{l.label}</span>
           </a>
         </li>
