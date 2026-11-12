@@ -16,7 +16,6 @@ Direction: **dark editorial luxury**. A carbon-black canvas, large light-weight 
 | `gold-400` | `#D4B26A` | Accent: CTAs, highlights, focus rings |
 | `gold-500` | `#C29A4B` | CTA hover, gold text on dark (AA at ≥18px) |
 | `gold-700` | `#7A5F2C` | Subtle gold borders |
-
 | `gold-300` | `#EAD08F` | Light end of the gold gradient |
 | `rose-400/500/700` | `#E45A71` / `#C8364F` / `#7D1D2F` | Secondary accent (the "rose" in Black Rose): glows, eyebrows on light sections, errors |
 | `steel-900/800/600` | `#1D1D22` / `#26262D` / `#3B3B44` | Process section and body text on light sections |
