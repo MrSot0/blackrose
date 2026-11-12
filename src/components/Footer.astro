@@ -11,12 +11,12 @@ const year = new Date().getFullYear();
         <Logo size="lg" tone="gold" />
         <p class="mt-8 max-w-xs leading-relaxed text-ash-400">{site.tagline}.</p>
       </div>
-      <div class="md:col-span-2">
+      <nav class="md:col-span-2" aria-label="Footer">
         <p class="field-label">Explore</p>
         <ul class="mt-4 space-y-3">
           {nav.map((l) => <li><a href={l.href} class="hover:text-gold-400">{l.label}</a></li>)}
         </ul>
-      </div>
+      </nav>
       <div class="md:col-span-3">
         <p class="field-label">Services</p>
         <ul class="mt-4 space-y-3">

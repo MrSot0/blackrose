@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import Icon from '../components/Icon.astro';
-import { faqs, services, site, waLink } from '../data/site';
+import { faqs, nav, services, site, waLink } from '../data/site';
 import unboundedWoff2 from '@fontsource-variable/unbounded/files/unbounded-latin-wght-normal.woff2?url';
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
@@ -41,6 +41,12 @@ const jsonLd = {
           itemOffered: { '@type': 'Service', name: s.title, description: s.copy },
         })),
       },
+      potentialAction: {
+        '@type': 'CommunicateAction',
+        name: 'Request a quote on WhatsApp',
+        target: { '@type': 'EntryPoint', urlTemplate: `https://wa.me/${site.whatsapp}?text={message}`, actionPlatform: ['https://schema.org/DesktopWebPlatform', 'https://schema.org/MobileWebPlatform'] },
+        'query-input': 'required name=message',
+      },
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: '+27838747567',
@@ -55,6 +61,11 @@ const jsonLd = {
       name: 'Blackrose Branding',
       inLanguage: 'en-ZA',
       publisher: { '@id': `${siteUrl}#business` },
+      hasPart: nav.map((n) => ({
+        '@type': 'SiteNavigationElement',
+        name: n.label,
+        url: new URL('/' + n.href, Astro.site).href,
+      })),
     },
     {
       '@type': 'FAQPage',
@@ -105,6 +116,11 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Machine-readable views for search crawlers and AI agents -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="alternate" type="text/markdown" href="/index.md" title="Page content as Markdown" />
+    <link rel="help" type="text/plain" href="/llms.txt" title="LLM index (llms.txt)" />
 
     <!-- Performance: fetch the two above-the-fold fonts early -->
     <link rel="preload" href={unboundedWoff2} as="font" type="font/woff2" crossorigin />

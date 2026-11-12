@@ -31,7 +31,6 @@ export const site = {
   name: 'Blackrose',
   tagline: 'Expert branding solutions for your home and business',
   email: 'traymond565@gmail.com',
-  website: 'www.blackrosebranding.co.in',
   whatsapp: '27838747567',
   phoneDisplay: '+27 83 874 7567',
   // TODO: replace '#' with the real profile links
