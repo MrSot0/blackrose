@@ -13,7 +13,7 @@ npm run build    # type-check + static build in dist/
 - Design tokens: `src/styles/global.css`, documented in `DESIGN.md`
 
 ## Pending from the client
-- Official logo file (SVG/PNG) to replace the typographic version in `src/components/Logo.astro`
+- Logo: `public/logo.svg` is vectorised from a screenshot of the flyer; swap in the original vector file if the client has one
 - Instagram, TikTok and LinkedIn links (`href: '#'` in `src/data/site.ts`)
 - Confirm they design, print **and install** (hero, process and meta copy rely on it)
 - Photos for Wallpaper and Corporate Gifting

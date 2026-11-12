@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/unbounded';
 @import '@fontsource-variable/inter';
-@import '@fontsource/cormorant-garamond/300.css';
-@import '@fontsource/mrs-saint-delafield/400.css';
 
 @theme {
   --color-carbon-950: #0b0b0c;
@@ -27,8 +25,6 @@
 
   --font-display: 'Unbounded Variable', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Cormorant Garamond', ui-serif, Georgia, serif;
-  --font-script: 'Mrs Saint Delafield', cursive;
 
   --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
